@@ -1,0 +1,138 @@
+/* ============================================================
+   theme.css — Tokens globales BusConnect
+   Fuente de verdad: identidad visual de index.html / estilo.css
+   ============================================================ */
+
+:root {
+    /* ── Tipografía ──────────────────────────────────────────── */
+    /* Display (títulos, headings): Plus Jakarta Sans — revertido */
+    --ff-display: 'Plus Jakarta Sans', sans-serif;
+    /* Body (párrafos, labels, UI): DM Sans */
+    --ff-body: 'DM Sans', sans-serif;
+
+    /* Escala tipográfica extraída de estilo.css */
+    --fs-display: clamp(3.5rem, 7vw, 6rem);  /* Hero landing */
+    --fs-h2:      clamp(2rem, 4vw, 3rem);
+    --fs-h3:      clamp(1.1rem, 2vw, 1.35rem);
+    --fs-xl:      clamp(1.40rem, 4vw, 1.75rem);
+    --fs-lg:      clamp(1.20rem, 3vw, 1.50rem);
+    --fs-base:    clamp(0.95rem, 2vw, 1rem);
+    --fs-md:      clamp(1.05rem, 2.5vw, 1.25rem);
+    --fs-sm:      clamp(0.80rem, 1.8vw, 0.88rem);
+    --fs-xs:      clamp(0.70rem, 1.5vw, 0.78rem);
+    --fs-small:   0.875rem;
+    --fs-label:   0.75rem;
+
+    /* ── Paleta de color — Modo claro (por defecto) ──────────── */
+    /* Marca primaria — azul BusConnect (landing: --primary-bright) */
+    --clr-brand:       #2E86C1;
+    --clr-brand-dark:  #1A5276;
+    --clr-brand-light: rgba(46, 134, 193, 0.08);
+    --clr-brand-glow:  rgba(46, 134, 193, 0.35);
+
+    /* Acento acción — verde (landing: --accent-action) */
+    --clr-success:    #27AE60;
+    --clr-success-bg: rgba(39, 174, 96, 0.10);
+
+    /* Estados semánticos */
+    --clr-error:      #e74c3c;
+    --clr-error-bg:   rgba(231, 76, 60, 0.08);
+    --clr-warning:    #e67e22;
+    --clr-warning-bg: rgba(230, 126, 34, 0.08);
+
+    /* Neutros modo claro */
+    --clr-white:       #ffffff;
+    --clr-surface:     #f4f4f6;   /* landing: --gris-claro */
+    --clr-border:      #e2e2e2;
+    --clr-body:        #3d3d3d;
+    --clr-heading:     #0a0a0a;   /* landing: --negro */
+    --clr-muted:       #888888;   /* landing: --gris-texto */
+    --clr-placeholder: #aaa;
+
+    /* ── Sombras — extraídas de estilo.css ───────────────────── */
+    --shadow-sm:   0 2px 6px rgba(0, 0, 0, .06), 0 4px 12px rgba(0, 0, 0, .08);
+    --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.12);  /* landing: --sombra-card adaptado claro */
+    --shadow-btn:  0 8px 25px var(--clr-brand-glow); /* landing: --sombra-primary */
+    --shadow-lg:   0 10px 40px rgba(0, 0, 0, 0.15);
+
+    /* ── Border-radius — escala de la landing ────────────────── */
+    --r-xs:   4px;
+    --r-sm:   8px;          /* landing: --radio-medio → 12px era "medio", aquí sm */
+    --r-md:   12px;         /* landing: --radio-medio */
+    --r-lg:   24px;         /* landing: --radio-grande */
+    --r-full: 999px;        /* landing: --radio-pill */
+
+    /* ── Transición global ───────────────────────────────────── */
+    --ease:       cubic-bezier(0.23, 1, 0.32, 1);  /* landing: --transicion */
+    --dur-fast:   140ms;
+    --dur-base:   260ms;
+    --transicion: all 0.35s var(--ease);            /* alias landing */
+
+    /* ── Espaciado ───────────────────────────────────────────── */
+    --sp-1: 0.25rem; --sp-2: 0.50rem; --sp-3: 0.75rem;
+    --sp-4: 1.00rem; --sp-5: 1.25rem; --sp-6: 1.50rem;
+    --sp-8: 2.00rem; --sp-10: 2.50rem; --sp-12: 3.00rem;
+
+    /* ── Driver Panel (mapeo sobre los tokens globales) ──────── */
+    --driver-bg:      var(--clr-surface);
+    --driver-surface: var(--clr-white);
+    --driver-accent:  var(--clr-brand);
+    --driver-danger:  var(--clr-error);
+    --driver-warning: var(--clr-warning);
+    --driver-success: var(--clr-success);
+    --text-main:      var(--clr-body);
+    --text-heading:   var(--clr-heading);
+    --text-dim:       var(--clr-muted);
+    --border-color:   var(--clr-border);
+    --btn-finish:     #1a1a2e;
+
+    /* ── Login specifics ────────────────────────────────────── */
+    --input-bg:     var(--clr-white);
+    --input-border: var(--clr-border);
+    --card-bg:      var(--clr-white);
+}
+
+/* ── MODO OSCURO ─────────────────────────────────────────────
+   Paleta oscura coherente con la landing (--negro: #0a0a0a,
+   --negro-medio: #141414) escalada para UI de aplicación.
+   ──────────────────────────────────────────────────────────── */
+html[data-theme="dark"] {
+    /* Fondos — oscuros profundos como la landing */
+    --clr-surface:     #0d1117;   /* landing bg principal */
+    --clr-white:       #141414;   /* landing: --negro-medio → tarjetas */
+    --clr-border:      #2a2a2c;   /* borde sutil sobre fondo oscuro */
+
+    /* Textos */
+    --clr-body:        #a0a0a0;   /* landing: gris intermedio */
+    --clr-heading:     #ffffff;
+    --clr-muted:       #666666;
+    --clr-placeholder: #555555;
+
+    /* Marca — mismo azul, glow más visible en oscuro */
+    --clr-brand-light: rgba(46, 134, 193, 0.15);
+    --clr-brand-glow:  rgba(46, 134, 193, 0.45);
+
+    /* Estados semánticos en oscuro */
+    --clr-error-bg:    rgba(231, 76, 60, 0.15);
+    --clr-success-bg:  rgba(39, 174, 96, 0.15);
+    --clr-warning-bg:  rgba(230, 126, 34, 0.15);
+
+    /* Sombras más pronunciadas sobre fondo oscuro */
+    --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.5);
+    --shadow-sm:   0 2px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg:   0 10px 40px rgba(0, 0, 0, 0.6);
+
+    /* Login / Card specifics */
+    --card-bg:      #141414;
+    --input-bg:     #0d1117;
+    --input-border: #2a2a2c;
+}
+
+/* ── Transición suave al cambiar tema ─────────────────────── */
+*, *::before, *::after {
+    transition:
+        background-color 0.3s ease,
+        border-color     0.3s ease,
+        color            0.3s ease,
+        box-shadow       0.3s ease;
+}

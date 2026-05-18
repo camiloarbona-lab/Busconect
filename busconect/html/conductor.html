@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración básica y optimización SEO -->
+    <meta charset="UTF-8">
+    <script src="../js/theme-init.js"></script>
+    <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>BusConnect Admin | Conductores</title>
+    <meta name="description" content="Panel de gestión de conductores del sistema BusConnect - Bucaramanga Área Metropolitana">
+    
+    <!-- Tipografías de Google: Estética moderna y legible -->
+    
+    
+    <!-- Iconografía Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Hoja de estilos del módulo de conductores -->
+    <link rel="stylesheet" href="../css/conductores.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar compartido (inyectado por js/ui-shared.js) -->
+<div id="sidebar-placeholder"></div>
+
+    <!-- ================================================================
+         LAYOUT PRINCIPAL
+         ================================================================ -->
+    <div class="main-layout">
+
+        <!-- CABECERA SUPERIOR: Controles y widgets de estado -->
+        <header class="top-bar">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="toggle-btn-fixed"><i class='bx bx-menu'></i></button>
+                <div class="page-info">
+                    <h1 class="page-title">Conductores</h1>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="date-chip"><i class='bx bx-calendar'></i><span id="fecha-actual">—</span></div>
+            </div>
+        </header>
+
+        <!-- CONTENIDO CENTRAL: Listado de Conductores -->
+        <main class="drivers-grid">
+
+            <!-- Encabezado de la sección de lista -->
+            <div class="list-header">
+                <h2 class="list-title"><i class='bx bx-group'></i> Conductores Registrados</h2>
+                <button class="btn-primary" id="btn-new-driver" title="Registrar nuevo conductor">
+                    <i class='bx bx-plus'></i> Nuevo Conductor
+                </button>
+            </div>
+
+            <!-- PANEL DE TABLA: Visualización de datos operativos -->
+            <div class="monitor-panel table-panel">
+                <div class="table-wrapper">
+                    <table class="drivers-table" id="drivers-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Foto</th>
+                                <th>Nombre Completo</th>
+                                <th>Teléfono Contacto</th>
+                                <th>Ruta Asignada</th>
+                                <th class="col-actions">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drivers-tbody">
+                            <!-- Filas inyectadas dinámicamente vía js/conductor.js -->
+                        </tbody>
+                    </table>
+                    <!-- Estado vacío en caso de no haber registros -->
+                    <div class="empty-state" id="empty-state" style="display:none;">
+                        <i class='bx bx-group'></i>
+                        <p>No se encontraron conductores registrados en el sistema</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- PIE DE PÁGINA -->
+        <footer class="admin-footer">
+            <p>© 2026 <strong>BusConnect</strong> | SENA Santander</p>
+            <span><span class="dot"></span> Nodo: Bucaramanga-Norte</span>
+        </footer>
+    </div>
+
+<!-- MODAL: Confirmar eliminación de conductor -->
+<!-- [View] Se activa desde conductor.js → eliminarConductor() -->
+<div class="modal-overlay" id="modal-delete-confirm">
+    <div class="modal modal-sm">
+        <div class="modal-header">
+            <p class="modal-title">
+                <i class='bx bx-trash' style="color: var(--clr-error, #e74c3c);"></i>
+                Confirmar Eliminación
+            </p>
+        </div>
+        <div class="modal-body">
+            <p style="margin: 0; line-height: 1.6;">
+                ¿Confirmas la eliminación definitiva de
+                <strong id="confirm-driver-name">—</strong>
+                del sistema? Esta acción no se puede deshacer.
+            </p>
+        </div>
+        <div class="modal-footer" style="display:flex; gap:.75rem; justify-content:flex-end;">
+            <button class="btn-secondary" id="btn-cancel-delete">Cancelar</button>
+            <button class="btn-primary"
+                    id="btn-confirm-delete"
+                    style="background: var(--clr-error, #e74c3c);">
+                Eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
+    <!-- TOAST (Notificación flotante) -->
+    <div id="toast" class="toast">
+        <i class='bx bx-check-circle'></i>
+        <span id="toast-msg">Operación completada</span>
+    </div>
+
+    <!-- SCRIPTS: Capas de datos y lógica de vista -->
+    <script src="../js/auth-guard.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/ui-shared.js"></script>
+    <script src="../js/conductor.js"></script>
+</body>
+</html>
+
