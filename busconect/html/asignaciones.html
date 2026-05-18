@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración básica y metadatos -->
+    <meta charset="UTF-8">
+    <script src="../js/theme-init.js"></script>
+    <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>BusConnect Admin | Asignaciones</title>
+
+    <!-- Fuentes de Google: DM Sans y Plus Jakarta Sans para una estética premium -->
+    
+    
+    <!-- Librería de iconos Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Hoja de estilos específica para el panel de asignaciones -->
+    <link rel="stylesheet" href="../css/asignaciones-style.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar compartido (inyectado por js/ui-shared.js) -->
+<div id="sidebar-placeholder"></div>
+
+<!-- ================================================================
+     LAYOUT PRINCIPAL
+     Contenedor de la vista de asignaciones.
+     ================================================================ -->
+<div class="main-layout">
+
+    <!-- CABECERA SUPERIOR: Información de la página y fecha -->
+    <header class="top-bar">
+        <div class="header-left">
+            <button id="sidebar-toggle" class="toggle-btn-fixed">
+                <i class='bx bx-menu'></i>
+            </button>
+            <div class="page-info">
+                <h1 class="page-title">Asignaciones</h1>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="date-chip">
+                <i class='bx bx-calendar'></i>
+                <span id="fecha-actual">—</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO CENTRAL -->
+    <main class="assign-grid">
+
+        <!-- RESUMEN DE MÉTRICAS (KPIs): Estado actual de la flota y conductores -->
+        <div class="assign-kpi">
+            <div class="kpi-mini">
+                <div class="kpi-mini-icon brand"><i class='bx bx-bus'></i></div>
+                <div>
+                    <p class="kpi-mini-label">Total Buses</p>
+                    <p class="kpi-mini-val" id="kpi-total-buses">—</p>
+                </div>
+            </div>
+            <div class="kpi-mini kpi-success">
+                <div class="kpi-mini-icon success"><i class='bx bx-check-circle'></i></div>
+                <div>
+                    <p class="kpi-mini-label">Buses Asignados</p>
+                    <p class="kpi-mini-val" id="kpi-asignados">—</p>
+                </div>
+            </div>
+            <div class="kpi-mini kpi-warn">
+                <div class="kpi-mini-icon warn"><i class='bx bx-error'></i></div>
+                <div>
+                    <p class="kpi-mini-label">Sin Conductor</p>
+                    <p class="kpi-mini-val" id="kpi-sin-conductor">—</p>
+                </div>
+            </div>
+            <div class="kpi-mini kpi-info">
+                <div class="kpi-mini-icon info"><i class='bx bx-group'></i></div>
+                <div>
+                    <p class="kpi-mini-label">Conductores Libres</p>
+                    <p class="kpi-mini-val" id="kpi-conductores-libres">—</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA DE ACCIONES: Búsqueda y botón de creación -->
+        <div class="action-bar">
+            <div class="search-box">
+                <i class='bx bx-search'></i>
+                <input type="text" id="search-input" class="search-input"
+                       placeholder="Buscar por placa, ruta o conductor…">
+            </div>
+            <button class="btn-primary" id="btn-nueva-asignacion">
+                <i class='bx bx-plus'></i> Nueva Asignación
+            </button>
+        </div>
+
+        <!-- TABLA DE CONTROL DE ASIGNACIONES -->
+        <div class="monitor-panel">
+            <div class="panel-header">
+                <h3><i class='bx bx-transfer-alt'></i> Asignaciones Operativas</h3>
+                <span id="assign-count" class="count-label">—</span>
+            </div>
+            <div class="table-wrap">
+                <table class="assign-table">
+                    <thead>
+                        <tr>
+                            <th>Bus (Placa)</th>
+                            <th>Marca / Modelo</th>
+                            <th>Ruta Asignada</th>
+                            <th>Conductor</th>
+                            <th>Estado</th>
+                            <th class="col-actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assign-tbody">
+                        <!-- El contenido se genera dinámicamente vía asignaciones.js -->
+                    </tbody>
+                </table>
+                <!-- Estado vacío cuando no hay resultados en la tabla -->
+                <div class="empty-state" id="empty-state" style="display:none;">
+                    <i class='bx bx-transfer-alt'></i>
+                    <p>No hay asignaciones registradas</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="admin-footer">
+        <p>© 2026 <strong>BusConnect</strong> | SENA Santander</p>
+        <span><span class="dot"></span> Servidor: Bucaramanga-DC</span>
+    </footer>
+
+</div>
+
+<!-- ================================================================
+     MODAL — Formulario de Asignación
+     Ventana emergente para vincular los tres ejes del sistema.
+     ================================================================ -->
+<div class="modal-overlay" id="modal-assign">
+    <div class="modal">
+        <div class="modal-header">
+            <p class="modal-title">
+                <i class='bx bx-transfer-alt'></i>
+                <span id="modal-mode-label">Nueva Asignación</span>
+            </p>
+            <button class="modal-close" id="modal-close"><i class='bx bx-x'></i></button>
+        </div>
+        <div class="modal-body">
+
+            <!-- Selección de Bus -->
+            <div class="form-group">
+                <label class="form-label">Seleccionar Bus *</label>
+                <select id="f-bus" class="form-control">
+                    <option value="" disabled selected>— Elige un bus —</option>
+                </select>
+            </div>
+
+            <!-- Vista previa rápida de datos del bus seleccionado -->
+            <div class="assign-preview" id="preview-bus">
+                <span class="preview-title">Bus Seleccionado</span>
+                <span class="preview-value" id="preview-bus-info">—</span>
+            </div>
+
+            <!-- Selección de Ruta -->
+            <div class="form-group">
+                <label class="form-label">Asignar Ruta *</label>
+                <select id="f-ruta" class="form-control">
+                    <option value="" disabled selected>— Elige una ruta —</option>
+                </select>
+            </div>
+
+            <!-- Selección de Conductor -->
+            <div class="form-group">
+                <label class="form-label">Asignar Conductor *</label>
+                <select id="f-conductor" class="form-control">
+                    <option value="" disabled selected>— Elige un conductor —</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="modal-cancel">Cancelar</button>
+            <button class="btn-primary" id="btn-save-assign">
+                <i class='bx bx-save'></i> Guardar Asignación
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: Confirmar liberación de bus -->
+<!-- [View] Se activa desde asignaciones.js → clearAssignment() -->
+<div class="modal-overlay" id="modal-clear-confirm">
+    <div class="modal modal-sm">
+        <div class="modal-header">
+            <p class="modal-title">
+                <i class='bx bx-transfer-alt' style="color: var(--clr-warning, #e67e22);"></i>
+                Liberar Bus
+            </p>
+        </div>
+        <div class="modal-body">
+            <p style="margin: 0; line-height: 1.6;">
+                ¿Confirmas liberar el bus <strong id="confirm-bus-placa">—</strong>?
+                Se desvinculará de su ruta y conductor actual.
+            </p>
+        </div>
+        <div class="modal-footer" style="display:flex; gap:.75rem; justify-content:flex-end;">
+            <button class="btn-secondary" id="btn-cancel-clear">Cancelar</button>
+            <button class="btn-primary"
+                    id="btn-confirm-clear"
+                    style="background: var(--clr-warning, #e67e22);">
+                Liberar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST (Notificación emergente) -->
+<div id="toast" class="toast">
+    <i class='bx bx-check-circle'></i>
+    <span id="toast-msg">Operación exitosa</span>
+</div>
+
+<!-- Inclusión de lógica del sistema -->
+<script src="../js/auth-guard.js"></script>
+<script src="../js/store.js"></script>
+<script src="../js/ui-shared.js"></script>
+<script src="../js/asignaciones.js"></script>
+
+</body>
+</html>
+

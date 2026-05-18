@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+    <script src="../js/theme-init.js"></script>
+    <link rel="stylesheet" href="../css/theme.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- 🔧 FIX: Marca corregida BuscoNetc → BusConnect -->
+  <title>BusConnect — Crear Cuenta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/styles.css" />
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="bg-deco" aria-hidden="true">
+    <div class="bg-deco__blob bg-deco__blob--a"></div>
+    <div class="bg-deco__blob bg-deco__blob--b"></div>
+  </div>
+
+  <div class="page">
+    <header class="site-header">
+      <nav aria-label="Navegación superior">
+        <a href="../login.html" class="btn-volver">
+          <i class="fa-solid fa-chevron-left"></i> Volver
+        </a>
+      </nav>
+    </header>
+
+    <article class="card">
+      <header class="card__header">
+        <div class="brand__icon-wrap">
+          <img src="../img/logo.png" alt="Logo BusConnect" class="icon icon--brand" />
+        </div>
+        <div class="card__text-group">
+          <h1 class="card__title">Registrate</h1>
+          <p class="card__subtitle">Crea tu cuenta de pasajero en BusConnect</p>
+        </div>
+      </header>
+
+      <form class="form" id="js-register-form" novalidate>
+
+        <div class="field">
+          <label class="field__label" for="reg-name">Nombre Completo</label>
+          <input class="field__input" type="text" id="reg-name" placeholder="Ej: Camilo Vides" required
+            pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="El nombre solo debe contener letras y espacios" />
+          <p id="errorNombre" class="field__msg" role="alert" hidden>Solo letras y espacios</p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="email">Correo Electrónico</label>
+          <input class="field__input" type="text" id="email" name="email" placeholder="correo@ejemplo.com" required />
+          <p id="errorUsuario" class="field__msg" role="alert" hidden> Ingresa un correo electronico valido </p>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="password">Contraseña</label>
+          <div class="field__wrap">
+            <input class="field__input field__input--pw" type="password" id="password" name="password"
+              placeholder="••••••••" required />
+            <button class="btn-eye" type="button" aria-label="Mostrar contraseña" aria-pressed="false" onclick="togglePassword('password', this)">
+              <!-- 🔧 FIX (Auto): Estilos inline removidos, manejados por CSS -->
+              <i class="fa-solid fa-eye icon--eye-on" aria-hidden="true"></i>
+              <i class="fa-solid fa-eye-slash icon--eye-off" aria-hidden="true"></i>
+            </button>
+          </div>
+          <p id="errorPass" class="field__msg" role="alert" hidden>Mín. 8 caracteres y símbolos (# . ,)</p>
+        </div>
+
+        <!-- reCAPTCHA -->
+        <div class="field" id="js-field-recaptcha">
+          <div class="field__wrap">
+            <div class="g-recaptcha" data-sitekey="6Ld0zuEsAAAAAMKBnHd6pPK4bpbZe9GscvzOC_VF"></div>
+          </div>
+          <span class="field__msg" id="js-recaptcha-msg" role="alert" aria-live="polite"></span>
+        </div>
+
+
+        <button class="btn-submit" type="button" id="js-btn-registrar" onclick="validarRegistro()">
+          <span class="btn-submit__text">Registrarme ahora</span>
+          <span class="btn-submit__spinner" aria-hidden="true"></span>
+        </button>
+
+        <p class="form__success" id="js-form-success" role="status" aria-live="polite" hidden></p>
+
+        <p class="form__aux">
+          ¿Ya tienes cuenta?&nbsp;<a class="link" href="../login.html">Inicia Sesión</a>
+        </p>
+
+      </form>
+    </article>
+  </div>
+  <!-- 🔧 FIX (Auto): Removido tag </main> huérfano y corregida ruta del script -->
+  <script src="../js/validaciones.js"></script>
+
+</body>
+
+</html>
+

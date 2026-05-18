@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración del documento y metadatos -->
+    <meta charset="UTF-8">
+    <script src="../js/theme-init.js"></script>
+    <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>BusConnect Admin | Gestión de Flota</title>
+
+    <!-- Google Fonts: DM Sans para cuerpo y Plus Jakarta Sans para jerarquía visual -->
+    
+    
+    <!-- Librería de iconos vectoriales Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Hoja de estilos principal para el módulo de Gestión de Flota -->
+    <link rel="stylesheet" href="../css/buses-style.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar compartido (inyectado por js/ui-shared.js) -->
+<div id="sidebar-placeholder"></div>
+
+<!-- ================================================================
+     LAYOUT PRINCIPAL
+     ================================================================ -->
+<div class="main-layout">
+
+    <!-- TOP BAR: Títulos y fecha actual -->
+    <header class="top-bar">
+        <div class="header-left">
+            <button id="sidebar-toggle" class="toggle-btn-fixed">
+                <i class='bx bx-menu'></i>
+            </button>
+            <div class="page-info">
+                <h1 class="page-title">Unidades (Buses)</h1>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="date-chip">
+                <i class='bx bx-calendar'></i>
+                <span id="fecha-actual">—</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO CENTRAL: Métricas y Listado -->
+    <main class="fleet-grid">
+
+        <!-- RESUMEN DE INDICADORES (KPIs) DE FLOTA -->
+        <div class="fleet-kpi">
+            <div class="kpi-mini">
+                <div class="kpi-mini-icon brand"><i class='bx bx-bus'></i></div>
+                <div>
+                    <p class="kpi-mini-label">Total Unidades</p>
+                    <p class="kpi-mini-val" id="kpi-total">—</p>
+                </div>
+            </div>
+            <div class="kpi-mini kpi-success">
+                <div class="kpi-mini-icon success"><i class='bx bx-check-circle'></i></div>
+                <div>
+                    <p class="kpi-mini-label">Operativas</p>
+                    <p class="kpi-mini-val" id="kpi-operativas">—</p>
+                </div>
+            </div>
+            <div class="kpi-mini kpi-warn">
+                <div class="kpi-mini-icon warn"><i class='bx bx-error-circle'></i></div>
+                <div>
+                    <p class="kpi-mini-label">SOAT Vencido</p>
+                    <p class="kpi-mini-val" id="kpi-soat">—</p>
+                </div>
+            </div>
+            <div class="kpi-mini kpi-info">
+                <div class="kpi-mini-icon info"><i class='bx bx-wrench'></i></div>
+                <div>
+                    <p class="kpi-mini-label">Tecno Vencida</p>
+                    <p class="kpi-mini-val" id="kpi-tecno">—</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA DE ACCIONES: Herramientas de filtrado y creación -->
+        <div class="action-bar">
+            <div class="search-box">
+                <i class='bx bx-search'></i>
+                <input type="text" id="search-input" class="search-input"
+                       placeholder="Buscar por placa, marca, modelo o empresa…">
+            </div>
+            <select id="filter-estado" class="filter-select">
+                <option value="">Todos los estados</option>
+                <option value="operativo">Operativo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+            <button class="btn-primary" id="btn-nueva-unidad">
+                <i class='bx bx-plus'></i> Nueva Unidad
+            </button>
+        </div>
+
+        <!-- PANEL DE TABLA DE FLOTA -->
+        <div class="monitor-panel table-panel">
+            <div class="panel-header">
+                <h3><i class='bx bx-list-ul'></i> Unidades Registradas</h3>
+                <span id="fleet-count" class="count-label">—</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="fleet-table" id="fleet-table">
+                    <thead>
+                        <tr>
+                            <!-- Encabezados con soporte de ordenamiento dinámico -->
+                            <th class="sortable" data-col="placa">
+                                Placa <i class='bx bx-sort'></i>
+                            </th>
+                            <th class="sortable" data-col="marca">
+                                Marca / Modelo <i class='bx bx-sort'></i>
+                            </th>
+                            <th class="sortable" data-col="anio">
+                                Año <i class='bx bx-sort'></i>
+                            </th>
+                            <th>SOAT</th>
+                            <th>Tecno-mecánica</th>
+                            <th class="sortable" data-col="empresa">
+                                ID Empresa <i class='bx bx-sort'></i>
+                            </th>
+                            <th>Estado</th>
+                            <th class="col-actions">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fleet-tbody">
+                        <!-- Las filas se inyectan dinámicamente mediante js/buses-crud.js -->
+                    </tbody>
+                </table>
+
+                <!-- Mensaje visible cuando no hay datos -->
+                <div class="empty-state" id="empty-state">
+                    <i class='bx bx-bus'></i>
+                    <p>No se encontraron unidades</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="admin-footer">
+        <p>© 2026 <strong>BusConnect</strong> | SENA Santander</p>
+        <span><span class="dot"></span> Servidor: Bucaramanga-DC</span>
+    </footer>
+
+</div>
+
+<!-- ================================================================
+     MODAL — Formulario de Gestión de Unidad
+     Permite dar de alta o editar la información técnica y legal de un bus.
+     ================================================================ -->
+<div class="modal-overlay" id="modal-bus">
+    <div class="modal">
+        <div class="modal-header">
+            <p class="modal-title">
+                <i class='bx bx-bus'></i>
+                <span id="modal-mode-label">Nueva Unidad</span>
+            </p>
+            <button class="modal-close" id="modal-close" title="Cerrar ventana"><i class='bx bx-x'></i></button>
+        </div>
+        <div class="modal-body">
+
+            <!-- Identificación Básica -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Placa <span class="req">*</span></label>
+                    <input type="text" id="f-placa" class="form-control"
+                           placeholder="Ej. ABC123" maxlength="6" autocomplete="off">
+                    <span class="field-hint">Exactamente 6 caracteres alfanuméricos</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estado</label>
+                    <select id="f-estado" class="form-control">
+                        <option value="operativo">Operativo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Detalles del Vehículo -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Marca <span class="req">*</span></label>
+                    <input type="text" id="f-marca" class="form-control"
+                           placeholder="Ej. Volkswagen">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Modelo <span class="req">*</span></label>
+                    <input type="text" id="f-modelo" class="form-control"
+                           placeholder="Ej. 17.230 OD">
+                </div>
+            </div>
+
+            <!-- Especificaciones Adicionales -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Año <span class="req">*</span></label>
+                    <input type="number" id="f-anio" class="form-control"
+                           placeholder="Ej. 2018" min="1990">
+                    <span class="field-hint">Entre 1990 y el año actual</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ID Empresa <span class="req">*</span></label>
+                    <input type="text" id="f-empresa" class="form-control"
+                           placeholder="Ej. EMP-001">
+                </div>
+            </div>
+
+            <!-- Sección de Legalización de Documentos -->
+            <div class="section-divider">
+                <i class='bx bx-file-blank'></i>
+                <span>Documentos de Habilitación</span>
+            </div>
+
+            <!-- Información SOAT -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">N° SOAT <span class="req">*</span></label>
+                    <input type="text" id="f-soat-num" class="form-control"
+                           placeholder="Ej. 10-4567890">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vencimiento SOAT <span class="req">*</span></label>
+                    <input type="date" id="f-soat-fecha" class="form-control">
+                </div>
+            </div>
+
+            <!-- Información Tecnomecánica -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">N° Tecno-mecánica <span class="req">*</span></label>
+                    <input type="text" id="f-tecno-num" class="form-control"
+                           placeholder="Ej. TM-2024-09812">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vencimiento Tecno <span class="req">*</span></label>
+                    <input type="date" id="f-tecno-fecha" class="form-control">
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="modal-cancel">Cancelar</button>
+            <button class="btn-primary" id="btn-save-bus">
+                <i class='bx bx-save'></i> Guardar unidad
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     MODAL — Confirmación de Eliminación
+     ================================================================ -->
+<div class="modal-overlay" id="modal-confirm">
+    <div class="modal modal-sm">
+        <div class="confirm-body">
+            <div class="confirm-icon"><i class='bx bx-trash'></i></div>
+            <h3>¿Eliminar unidad?</h3>
+            <p>Esta acción no se puede deshacer. Se eliminará la unidad
+               <strong id="confirm-bus-placa"></strong> del sistema.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="confirm-cancel">Cancelar</button>
+            <button class="btn-danger" id="confirm-delete">
+                <i class='bx bx-trash'></i> Eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts del sistema -->
+<script src="../js/auth-guard.js"></script>
+<script src="../js/store.js"></script>
+<script src="../js/ui-shared.js"></script>
+<script src="../js/buses-crud.js"></script>
+
+</body>
+</html>
+
