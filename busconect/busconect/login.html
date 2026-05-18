@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- ?? FIX: Marca corregida BuscoNetc ? BusConnect -->
+  <meta name="description" content="BusConnect  Acceso Administrativo y Pasajero" />
+  <title>BusConnect · Iniciar Sesión</title>
+
+  <!-- Optimización de carga de fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  
+
+  <!-- Iconografía: FontAwesome 6 para íconos de seguridad y estado -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script src="js/theme-init.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Script de Google reCAPTCHA para validación anti-bot -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ELEMENTOS DECORATIVOS: Blobs animados de fondo -->
+  <div class="bg-deco" aria-hidden="true">
+    <span class="bg-deco__blob bg-deco__blob--a"></span>
+    <span class="bg-deco__blob bg-deco__blob--b"></span>
+  </div>
+
+  <div class="page">
+
+    <!-- -- ENCABEZADO -- -->
+    <header class="site-header">
+      <nav aria-label="Navegación superior" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <a href="index.html" class="btn-volver">
+          <i class="fa-solid fa-chevron-left"></i> Volver
+        </a>
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Cambiar tema">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+      </nav>
+    </header>
+
+    <!-- SECCIÓN DE MARCA: Identidad visual del sistema -->
+    <div class="brand">
+      <div class="brand__icon-wrap" aria-hidden="true">
+        <img src="img/logo.png" alt="Logo BusConnect" class="icon icon--brand" />
+      </div>
+      <div class="brand__copy">
+        <strong class="brand__name">BusConnect</strong>
+      </div>
+    </div>
+
+    <!-- -- CONTENIDO PRINCIPAL: Formulario de acceso -- -->
+    <main class="main">
+
+      <article class="card" aria-labelledby="js-login-heading">
+
+        <!-- CABECERA DE LA TARJETA -->
+        <header class="card__header">
+          <div class="card__icon-wrap" aria-hidden="true">
+            <i class="fa-solid fa-right-to-bracket icon--card"></i>
+          </div>
+          <div>
+            <h1 class="card__title" id="js-login-heading">Iniciar Sesión</h1>
+          </div>
+        </header>
+
+        <!-- FORMULARIO DE LOGIN -->
+        <form class="form" id="js-login-form" novalidate autocomplete="on">
+
+          <!-- CAMPO: CORREO ELECTRÓNICO -->
+          <div class="field" id="js-field-email">
+            <label class="field__label" for="email">Correo Electrónico</label>
+            <div class="field__wrap">
+              <input class="field__input" type="email" id="email" name="email" placeholder="correo@ejemplo.com"
+                autocomplete="email" inputmode="email" aria-required="true" aria-describedby="js-email-msg" />
+            </div>
+            <!-- Espacio para mensajes de validación en tiempo real -->
+            <span class="field__msg" id="js-email-msg" role="alert" aria-live="polite"></span>
+          </div>
+
+          <!-- CAMPO: CONTRASEÑA -->
+          <div class="field" id="js-field-password">
+            <label class="field__label" for="password">Contraseña</label>
+            <div class="field__wrap" id="js-pw-wrap">
+              <input class="field__input field__input--pw" type="password" id="password" name="password"
+                placeholder="" autocomplete="current-password" aria-required="true"
+                aria-describedby="js-password-msg" />
+
+              <!-- Botón interactivo para alternar visibilidad de la contraseña -->
+              <button class="btn-eye" type="button" id="js-btn-toggle-pw" aria-label="Mostrar contraseña"
+                aria-pressed="false">
+                <i class="fa-solid fa-eye icon--eye-on" aria-hidden="true"></i>
+                <i class="fa-solid fa-eye-slash icon--eye-off" aria-hidden="true"></i>
+              </button>
+            </div>
+            <span class="field__msg" id="js-password-msg" role="alert" aria-live="polite"></span>
+          </div>
+
+          <!-- COMPONENTE RECAPTCHA -->
+          <div class="field" id="js-field-recaptcha">
+            <div class="field__wrap">
+              <div class="g-recaptcha" data-sitekey="6Ld0zuEsAAAAAMKBnHd6pPK4bpbZe9GscvzOC_VF"></div>
+            </div>
+            <span class="field__msg" id="js-recaptcha-msg" role="alert" aria-live="polite"></span>
+          </div>
+
+          <!-- BOTÓN DE ACCESO -->
+          <button class="btn-submit" type="submit" id="js-btn-submit">
+            <span class="btn-submit__text">Ingresar</span>
+            <span class="btn-submit__spinner" aria-hidden="true"></span>
+          </button>
+
+          <!-- FEEDBACK DE ÉXITO -->
+          <p class="form__success" id="js-form-success" role="status" aria-live="polite" hidden></p>
+
+          <!-- ACCIONES SECUNDARIAS / ENLACES -->
+          <p class="form__aux">
+            ¿No tienes una cuenta?&nbsp;
+            <a class="link" href="html/registro.html">Regístrate aquí</a>
+          </p>
+          <p class="form__aux">
+            <a class="link link--soft" href="html/recuperar.html">¿Olvidaste tu contraseña?</a>
+          </p>
+        </form>
+      </article>
+
+      <!-- BANNER DE INFORMACIÓN DEMO -->
+      <aside class="demo-banner" aria-label="Información de prueba">
+        <strong>Modo Demo:</strong> Ingresa tus credenciales registradas para acceder al panel.
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- ?? FIX: Incluir auth-guard.js para persistencia de sesión -->
+  <script src="js/auth-guard.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/validaciones.js"></script>
+
+</body>
+
+</html>
+

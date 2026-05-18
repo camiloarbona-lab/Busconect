@@ -1,0 +1,424 @@
+/* ============================================================
+   asignaciones-style.css
+   MÃ³dulo: Panel de Asignaciones â€” BusConnect Admin
+   Extiende: admin-style.css (variables y base compartida)
+   ============================================================ */
+
+/* ============================================================
+   VARIABLES
+   ============================================================ */
+
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: var(--ff-body);
+    background: var(--clr-surface);
+    color: var(--clr-body);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   LAYOUT â€” Overlay del sidebar (fondo oscuro)
+   ============================================================ */
+
+.sidebar-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ============================================================
+   LAYOUT â€” Sidebar (Drawer que emerge desde fuera)
+   ============================================================ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.logout-btn:hover { background: var(--clr-error-bg); }
+
+/* ============================================================
+   LAYOUT â€” Main content (ocupa siempre el 100%)
+   ============================================================ */
+.main-layout {
+    flex-grow: 1; margin-left: 0; width: 100%;
+    display: flex; flex-direction: column; min-height: 100vh;
+}
+
+/* ============================================================
+   LAYOUT â€” Top Bar
+   ============================================================ */
+
+
+
+
+
+
+
+.toggle-btn-fixed:hover { background: var(--clr-surface); border-color: #ccc; color: var(--clr-heading); }
+
+.header-actions { display: flex; align-items: center; gap: 12px; }
+.date-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; background: var(--clr-surface);
+    border: 1px solid var(--clr-border); border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+/* ============================================================
+   LAYOUT â€” Grid de contenido
+   ============================================================ */
+.assign-grid {
+    display: flex; flex-direction: column;
+    gap: 24px; padding: 30px; flex: 1;
+}
+
+/* ============================================================
+   COMPONENTE â€” KPIs compactos
+   ============================================================ */
+.assign-kpi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+.kpi-mini {
+    background: var(--clr-white); border-radius: var(--r-md);
+    box-shadow: var(--shadow-card); padding: 18px 20px;
+    display: flex; align-items: center; gap: 14px;
+    border-left: 4px solid var(--clr-brand);
+}
+.kpi-mini.kpi-success { border-left-color: var(--clr-success); }
+.kpi-mini.kpi-info    { border-left-color: var(--clr-brand); }
+.kpi-mini.kpi-warn    { border-left-color: var(--clr-warning); }
+
+.kpi-mini-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+}
+.kpi-mini-icon.brand   { background: var(--clr-brand-light); color: var(--clr-brand); }
+.kpi-mini-icon.success { background: #e8f5e9; color: var(--clr-success); }
+.kpi-mini-icon.info    { background: #e3f2fd; color: var(--clr-brand); }
+.kpi-mini-icon.warn    { background: #fff3e0; color: var(--clr-warning); }
+
+.kpi-mini-label { font-size: 0.78rem; color: var(--clr-muted); margin-bottom: 2px; }
+.kpi-mini-val   { font-family: var(--ff-display); font-size: 1.4rem; font-weight: 800; }
+
+/* ============================================================
+   COMPONENTE â€” Barra de acciones
+   ============================================================ */
+.action-bar {
+    display: flex; justify-content: space-between;
+    align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.search-box { position: relative; flex: 1; max-width: 360px; }
+.search-box i {
+    position: absolute; left: 14px; top: 50%;
+    transform: translateY(-50%); color: #aaa; font-size: 1.1rem;
+}
+.search-input {
+    width: 100%; padding: 10px 14px 10px 40px;
+    border: 1px solid var(--clr-border); border-radius: var(--r-md);
+    font-family: var(--ff-body); font-size: 0.9rem;
+    background: var(--clr-white); outline: none; transition: border 0.2s;
+}
+.search-input:focus { border-color: var(--clr-brand); }
+
+.btn-primary {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px; background: var(--clr-brand);
+    color: var(--clr-white); border: none; border-radius: var(--r-md);
+    font-family: var(--ff-body); font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; transition: 0.2s; white-space: nowrap;
+}
+.btn-primary:hover { background: var(--clr-brand-dark); transform: translateY(-1px); }
+
+/* ============================================================
+   COMPONENTE â€” Tabla de Asignaciones
+   ============================================================ */
+.monitor-panel {
+    background: var(--clr-white); border-radius: var(--r-md);
+    box-shadow: var(--shadow-card); border: 1px solid var(--clr-border);
+    display: flex; flex-direction: column; overflow: hidden;
+}
+.panel-header {
+    padding: 18px 20px; border-bottom: 1px solid var(--clr-border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+}
+.panel-header h3 {
+    font-family: var(--ff-display); font-weight: 700; font-size: 1rem;
+    display: flex; align-items: center; gap: 8px; color: var(--clr-heading);
+}
+.panel-header h3 i { color: var(--clr-brand); font-size: 1.1rem; }
+.count-label { font-size: 0.8rem; color: #aaa; }
+
+.table-wrap { overflow-x: auto; flex: 1; }
+
+.assign-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.88rem;
+    white-space: nowrap;
+}
+.assign-table thead th {
+    padding: 14px 16px; text-align: left;
+    font-weight: 600; font-size: 0.78rem;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--clr-muted); border-bottom: 2px solid var(--clr-border);
+    background: var(--clr-surface); white-space: nowrap;
+}
+.assign-table tbody td {
+    padding: 14px 16px; border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+.assign-table tbody tr {
+    transition: background 0.2s;
+}
+.assign-table tbody tr:hover {
+    background: var(--clr-brand-light);
+}
+
+/* Celdas especiales */
+.placa-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; background: var(--clr-brand-light);
+    color: var(--clr-brand); border-radius: var(--r-sm);
+    font-weight: 700; font-size: 0.82rem;
+}
+
+.ruta-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: var(--r-sm);
+    font-weight: 600; font-size: 0.82rem;
+    color: #fff;
+}
+
+.conductor-cell {
+    display: flex; align-items: center; gap: 10px;
+}
+.conductor-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--clr-brand-light); color: var(--clr-brand);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.72rem; flex-shrink: 0;
+}
+.conductor-name { font-weight: 600; }
+
+.estado-badge           { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.estado-badge.asignado  { background: #e8f5e9; color: var(--clr-success); }
+.estado-badge.libre     { background: #fff3e0; color: var(--clr-warning); }
+.estado-badge.inactivo  { background: #ffebee; color: var(--clr-error); }
+
+.empty-state {
+    padding: 40px 20px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.empty-state i { font-size: 2.5rem; color: #ddd; }
+.empty-state p { font-size: 0.85rem; color: #aaa; }
+
+/* Acciones de fila */
+.row-actions { display: flex; gap: 4px; }
+.icon-btn {
+    background: none; border: none; cursor: pointer;
+    width: 32px; height: 32px; border-radius: var(--r-sm);
+    display: flex; align-items: center; justify-content: center;
+    color: #aaa; font-size: 1rem; transition: 0.2s;
+}
+.icon-btn:hover        { background: var(--clr-surface); color: var(--clr-brand); }
+.icon-btn.delete:hover { background: #ffebee; color: var(--clr-error); }
+
+/* ============================================================
+   COMPONENTE â€” Footer
+   ============================================================ */
+
+.dot {
+    height: 8px; width: 8px; background: var(--clr-success);
+    border-radius: 50%; display: inline-block; margin-right: 5px;
+}
+
+/* ============================================================
+   COMPONENTE â€” Modal
+   ============================================================ */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px); z-index: 2000;
+    display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+
+.modal {
+    background: var(--clr-white); border-radius: 20px;
+    width: 100%; max-width: 520px; margin: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    overflow: hidden; animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modal-header {
+    padding: 22px 24px; border-bottom: 1px solid var(--clr-border);
+    display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title {
+    font-family: var(--ff-display); font-weight: 800;
+    font-size: 1.1rem; color: var(--clr-heading);
+    display: flex; align-items: center; gap: 10px;
+}
+.modal-title i { color: var(--clr-brand); }
+
+.modal-close {
+    background: none; border: none; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #aaa; font-size: 1.3rem; transition: 0.2s;
+}
+.modal-close:hover { background: #f0f0f0; color: var(--clr-heading); }
+
+.modal-body {
+    padding: 24px; display: flex; flex-direction: column; gap: 18px;
+    max-height: 70vh; overflow-y: auto;
+}
+.modal-footer {
+    padding: 18px 24px; border-top: 1px solid var(--clr-border);
+    display: flex; justify-content: flex-end; gap: 10px;
+}
+
+/* Formulario */
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 0.82rem; font-weight: 600; color: var(--clr-heading); }
+.form-control {
+    padding: 10px 14px; border: 1px solid var(--clr-border);
+    border-radius: 10px; font-family: var(--ff-body);
+    font-size: 0.9rem; outline: none; transition: border 0.2s;
+    background: var(--clr-white); color: var(--clr-body);
+}
+.form-control:focus { border-color: var(--clr-brand); }
+
+.btn-secondary {
+    padding: 10px 20px; background: var(--clr-white);
+    border: 1px solid var(--clr-border); border-radius: var(--r-md);
+    font-family: var(--ff-body); font-size: 0.9rem;
+    cursor: pointer; color: var(--clr-body); transition: 0.2s;
+}
+.btn-secondary:hover { background: var(--clr-surface); }
+
+/* Preview de selecciÃ³n */
+.assign-preview {
+    background: var(--clr-surface); border-radius: var(--r-md);
+    padding: 16px; border: 1px solid var(--clr-border);
+    display: none; flex-direction: column; gap: 8px;
+}
+.assign-preview.visible { display: flex; }
+.preview-title {
+    font-size: 0.78rem; color: var(--clr-muted); text-transform: uppercase;
+    letter-spacing: 0.5px; font-weight: 600;
+}
+.preview-value {
+    font-size: 0.92rem; font-weight: 700; color: var(--clr-heading);
+}
+
+/* Toast */
+.toast {
+    position: fixed; bottom: 30px; right: 30px;
+    background: var(--clr-heading); color: #fff;
+    padding: 14px 24px; border-radius: var(--r-md);
+    font-size: 0.88rem; display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3000;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1200px) {
+    /* NOTA: Las columnas no se ocultan, la tabla hace scroll horizontal */
+    .assign-kpi { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 1024px) {
+    /* Optimización de espacio en tablets */
+    .assign-grid { padding: 24px; }
+}
+
+@media (max-width: 768px) {
+    /* Reducimos el alto de la cabecera */
+    
+    
+    
+    /* Buscador apilado a ancho completo */
+    .action-bar { flex-direction: column; align-items: stretch; gap: 12px; }
+    .search-box { max-width: 100%; }
+    
+    /* Reducimos el tamaño de la tabla para que quepan más datos, pero sigue siendo deslizable */
+    .assign-table { font-size: 0.82rem; }
+    .assign-table thead th, .assign-table tbody td { padding: 10px 12px; }
+    
+    
+    .assign-grid { padding: 20px; gap: 18px; }
+    
+    /* Ventanas modales mejor adaptadas a tablets con scroll interno */
+    .modal { max-width: 95vw; max-height: 90vh; margin: 12px; border-radius: 16px; display: flex; flex-direction: column; }
+    .modal-header { padding: 18px 20px; }
+    .modal-body { padding: 20px; gap: 14px; overflow-y: auto; flex: 1; }
+    .modal-footer { padding: 14px 20px; }
+}
+
+@media (max-width: 576px) {
+    /* Ajustes completos para móviles */
+    
+    
+    .header-actions { width: 100%; justify-content: space-between; }
+    
+    
+    /* Las tarjetas de KPI pasan a formato 1 columna apilada */
+    .assign-kpi { grid-template-columns: 1fr; gap: 10px; }
+    
+    .btn-primary { width: 100%; justify-content: center; }
+    
+    /* Modal de asignaciones se vuelve pantalla completa en móviles, con scroll para botones */
+    .modal { max-width: 95vw; max-height: 95vh; margin: 10px; border-radius: var(--r-md); }
+    .modal-body { padding: 16px; }
+    
+    /* Botones de acción del modal apilados */
+    .modal-footer { flex-direction: column; }
+    .modal-footer .btn-primary, .modal-footer .btn-secondary { width: 100%; justify-content: center; text-align: center; }
+}
+
+@media (max-width: 400px) {
+    /* Ajustes extremos para pantallas diminutas */
+    
+    
+    .assign-grid { padding: 10px; gap: 10px; }
+}
+
+/* Row fade animation */
+@keyframes fadeInRow {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+

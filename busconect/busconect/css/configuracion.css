@@ -1,0 +1,664 @@
+/* ============================================================
+   configuracion.css
+   MÃ³dulo: ConfiguraciÃ³n â€” BusConnect Admin
+   Sistema de diseÃ±o compartido + PestaÃ±as + Selectores de tema
+   ============================================================ */
+
+/* ============================================================
+   VARIABLES â€” sistema de diseÃ±o compartido
+   ============================================================ */
+
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: var(--ff-body);
+    background: var(--clr-surface);
+    color: var(--clr-body);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   LAYOUT â€” Overlay del sidebar (fondo oscuro)
+   ============================================================ */
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 1050;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.sidebar-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ============================================================
+   LAYOUT â€” Sidebar (Drawer que emerge desde fuera)
+   ============================================================ */
+.sidebar {
+    position: fixed; top: 0; left: 0;
+    height: 100vh; width: 280px;
+    background: var(--clr-white); z-index: 1100;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.35s ease;
+    border-right: 1px solid var(--clr-border);
+    transform: translateX(-100%);
+    display: flex; flex-direction: column; padding: 20px 15px;
+    box-shadow: none;
+}
+.sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.18);
+}
+
+.sidebar-header { margin-bottom: 30px; }
+.logo-wrapper   { display: flex; align-items: center; gap: 12px; }
+.sidebar-logo { width: 42px; height: 42px; border-radius: var(--r-md); object-fit: contain; }
+.logo-text {
+    font-family: var(--ff-display); font-weight: 800;
+    font-size: 1.2rem; color: var(--clr-heading);
+}
+
+.nav-list   { list-style: none; flex-grow: 1; }
+.nav-item   { margin-bottom: 8px; }
+.nav-link {
+    display: flex; align-items: center; padding: 14px 18px;
+    color: var(--clr-muted); text-decoration: none; border-radius: 16px;
+    transition: 0.3s; gap: 12px;
+}
+.nav-link:hover  { background: var(--clr-brand-light); color: var(--clr-brand); }
+.nav-link.active {
+    background: var(--clr-brand); color: var(--clr-white);
+    box-shadow: 0 8px 20px var(--clr-brand-glow);
+}
+
+.sidebar-footer {
+    margin-top: auto; padding-top: 20px;
+    border-top: 1px solid var(--clr-border);
+}
+.user-profile { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+.avatar {
+    width: 40px; height: 40px; background: var(--clr-brand-light);
+    color: var(--clr-brand); border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-weight: 700;
+}
+.user-name { font-weight: 700; font-size: 0.9rem; color: var(--clr-heading); }
+.user-role { font-size: 0.75rem; color: var(--clr-muted); }
+
+.logout-btn {
+    width: 100%; display: flex; align-items: center;
+    justify-content: center; gap: 10px; padding: 12px;
+    border: 1px solid var(--clr-border); border-radius: var(--r-md);
+    background: transparent; color: var(--clr-error);
+    cursor: pointer; font-family: var(--ff-body); font-weight: 500; transition: 0.3s;
+}
+.logout-btn:hover { background: var(--clr-error-bg); }
+
+/* ============================================================
+   LAYOUT â€” Main content (ocupa siempre el 100%)
+   ============================================================ */
+.main-layout {
+    flex-grow: 1; margin-left: 0; width: 100%;
+    display: flex; flex-direction: column; min-height: 100vh;
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.top-bar {
+    padding: 25px 30px; background: var(--clr-white);
+    display: flex; justify-content: space-between; align-items: center;
+    min-height: 110px; border-bottom: 1px solid var(--clr-border);
+}
+.header-left    { display: flex; align-items: center; gap: 20px; }
+.page-info      { display: flex; flex-direction: column; justify-content: center; }
+.page-title {
+    font-family: var(--ff-display); font-size: 1.5rem;
+    font-weight: 800; line-height: 1.2; margin: 0;
+}
+.page-subtitle  { font-size: 0.85rem; color: var(--clr-muted); margin-top: -2px; }
+
+.toggle-btn-fixed {
+    background: transparent;
+    color: var(--clr-body);
+    border: 1px solid var(--clr-border);
+    width: 40px; height: 40px; border-radius: var(--r-md);
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; font-size: 1.1rem;
+    transition: all 0.2s ease; z-index: 1000;
+}
+.toggle-btn-fixed:hover { background: var(--clr-surface); border-color: #ccc; color: var(--clr-heading); }
+
+.header-actions { display: flex; align-items: center; gap: 12px; }
+.date-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px; background: var(--clr-surface);
+    border: 1px solid var(--clr-border); border-radius: 10px;
+    font-size: 0.85rem;
+}
+.notif-btn {
+    position: relative; background: none; border: none; cursor: pointer;
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; color: var(--clr-muted); transition: 0.2s;
+}
+.notif-btn:hover { background: var(--clr-surface); color: var(--clr-brand); }
+.notif-dot {
+    position: absolute; top: 8px; right: 8px;
+    width: 8px; height: 8px; background: var(--clr-error);
+    border-radius: 50%; border: 2px solid var(--clr-white);
+}
+
+/* ============================================================
+   CONFIG CONTENT â€” Contenedor principal
+   ============================================================ */
+.config-content {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 900px;
+}
+
+/* ============================================================
+   COMPONENTE — Panel base (monitor-panel)
+   ============================================================ */
+.monitor-panel {
+    background: var(--clr-white); border-radius: var(--r-md);
+    box-shadow: var(--shadow-card); border: 1px solid var(--clr-border);
+    display: flex; flex-direction: column; overflow: hidden;
+}
+
+.panel-header {
+    padding: 18px 20px; border-bottom: 1px solid var(--clr-border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0; background: var(--clr-surface);
+}
+.panel-header h3 {
+    font-family: var(--ff-display); font-weight: 700; font-size: 1.1rem;
+    display: flex; align-items: center; gap: 8px; color: var(--clr-heading);
+}
+.panel-header h3 i { color: var(--clr-brand); font-size: 1.2rem; }
+
+/* ============================================================
+   COMPONENTE — Sistema de Pestañas
+   ============================================================ */
+.tabs-container {
+    display: flex; gap: 4px; padding: 12px 20px;
+    background: var(--clr-white); border-bottom: 1px solid var(--clr-border);
+    overflow-x: auto;
+}
+
+.tab-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border: none; border-radius: var(--r-sm);
+    background: transparent; color: var(--clr-muted);
+    font-family: var(--ff-body); font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: all 0.25s ease; white-space: nowrap;
+}
+.tab-btn i { font-size: 1.1rem; }
+.tab-btn:hover { background: var(--clr-surface); color: var(--clr-heading); }
+.tab-btn.active { background: var(--clr-brand); color: var(--clr-white); box-shadow: 0 4px 14px rgba(0, 102, 255, 0.2); }
+
+/* ============================================================
+   COMPONENTE — Secciones de contenido (pestañas)
+   ============================================================ */
+.panel-body { padding: 24px; background: var(--clr-white); }
+
+.tab-section { display: none; animation: fadeSection 0.35s ease; }
+.tab-section.active { display: block; }
+
+@keyframes fadeSection {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   COMPONENTE — Section Card (tarjeta de sección)
+   ============================================================ */
+.section-card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 24px 28px 0;
+}
+.section-title {
+    font-family: var(--ff-display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--clr-heading);
+    margin-bottom: 4px;
+}
+.section-desc {
+    font-size: 0.85rem;
+    color: var(--clr-muted);
+    line-height: 1.5;
+}
+
+.section-body {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-footer {
+    padding: 18px 28px;
+    border-top: 1px solid var(--clr-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+.section-footer-split {
+    justify-content: space-between;
+}
+
+/* ============================================================
+   COMPONENTE â€” Formularios
+   ============================================================ */
+.form-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 0.82rem; font-weight: 600; color: var(--clr-heading); }
+.req        { color: var(--clr-brand); }
+
+.form-control {
+    padding: 10px 14px; border: 1px solid var(--clr-border);
+    border-radius: 10px; font-family: var(--ff-body);
+    font-size: 0.9rem; outline: none; transition: border 0.2s;
+    background: var(--clr-white); color: var(--clr-body);
+}
+.form-control:focus { border-color: var(--clr-brand); box-shadow: 0 0 0 3px var(--clr-brand-glow); }
+.form-control[readonly] { background: var(--clr-surface); color: #999; cursor: not-allowed; }
+
+textarea.form-control { resize: vertical; min-height: 60px; }
+
+.field-hint { font-size: 0.72rem; color: #aaa; margin-top: -2px; }
+
+/* Campo de contraseÃ±a con toggle */
+.password-field {
+    position: relative;
+}
+.password-field .form-control {
+    padding-right: 42px;
+}
+.pass-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+.pass-toggle:hover { color: var(--clr-brand); }
+
+/* ============================================================
+   COMPONENTE â€” Botones
+   ============================================================ */
+.btn-primary {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 22px; background: var(--clr-brand);
+    color: var(--clr-white); border: none; border-radius: var(--r-md);
+    font-family: var(--ff-body); font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; transition: 0.2s; white-space: nowrap;
+}
+.btn-primary:hover { background: var(--clr-brand-dark); transform: translateY(-1px); }
+
+.btn-outline {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 22px; background: transparent;
+    color: var(--clr-body); border: 1px solid var(--clr-border); border-radius: var(--r-md);
+    font-family: var(--ff-body); font-size: 0.88rem; font-weight: 500;
+    cursor: pointer; transition: 0.2s; white-space: nowrap;
+}
+.btn-outline:hover { background: var(--clr-surface); border-color: #ccc; }
+
+/* ============================================================
+   COMPONENTE â€” Bloques de configuraciÃ³n
+   ============================================================ */
+.config-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.config-block-label {
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--clr-heading);
+}
+.config-block-hint {
+    font-size: 0.82rem;
+    color: var(--clr-muted);
+    line-height: 1.4;
+    margin-top: -4px;
+}
+.config-block-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #aaa;
+    margin-top: 4px;
+}
+.config-block-note i { font-size: 1rem; color: #bbb; }
+
+.divider {
+    height: 1px;
+    background: var(--clr-border);
+    margin: 4px 0;
+}
+
+/* ============================================================
+   COMPONENTE â€” Selector de Tema (3 tarjetas con preview)
+   ============================================================ */
+.theme-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.theme-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    border: 2px solid var(--clr-border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: var(--clr-white);
+}
+.theme-option:hover {
+    border-color: #ccc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+.theme-option.active {
+    border-color: var(--clr-brand);
+    background: var(--clr-brand-light);
+    box-shadow: 0 4px 16px rgba(139, 0, 69, 0.12);
+}
+.theme-option input[type="radio"] {
+    display: none;
+}
+
+.theme-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--clr-body);
+}
+.theme-option.active .theme-label {
+    color: var(--clr-brand);
+}
+
+.theme-check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.1rem;
+    color: var(--clr-brand);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.theme-option.active .theme-check {
+    opacity: 1;
+}
+
+/* Miniatura de preview del tema */
+.theme-preview {
+    width: 100%;
+    height: 80px;
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    display: flex;
+    border: 1px solid var(--clr-border);
+}
+.tp-sidebar {
+    width: 25%;
+    height: 100%;
+}
+.tp-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.tp-header {
+    height: 18%;
+}
+.tp-body {
+    flex: 1;
+    padding: 6px;
+    display: flex;
+    gap: 4px;
+}
+.tp-card {
+    flex: 1;
+    border-radius: 3px;
+}
+
+/* Tema Claro */
+.theme-light .tp-sidebar  { background: #fff; border-right: 1px solid #e2e2e2; }
+.theme-light .tp-header   { background: #fff; border-bottom: 1px solid #e2e2e2; }
+.theme-light .tp-body     { background: #fafafa; }
+.theme-light .tp-card     { background: #fff; border: 1px solid #eee; }
+
+/* Tema Oscuro */
+.theme-dark .tp-sidebar   { background: #1a1a2e; }
+.theme-dark .tp-header    { background: #16213e; }
+.theme-dark .tp-body      { background: #0f3460; }
+.theme-dark .tp-card      { background: #1a1a2e; border: 1px solid #233; }
+
+/* Tema Sistema */
+.theme-system {
+    background: linear-gradient(135deg, #fafafa 50%, #1a1a2e 50%);
+}
+.theme-system .tp-sidebar { background: linear-gradient(180deg, #fff 50%, #1a1a2e 50%); }
+.theme-system .tp-header  { background: linear-gradient(90deg, #fff 50%, #16213e 50%); }
+.theme-system .tp-body    { background: transparent; }
+.theme-system .tp-card    { background: linear-gradient(135deg, #fff 50%, #1a1a2e 50%); }
+
+/* ============================================================
+   COMPONENTE â€” Selector de idioma
+   ============================================================ */
+.lang-selector-wrapper {
+    max-width: 320px;
+}
+.lang-select {
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   COMPONENTE â€” Toggle Switch
+   ============================================================ */
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.toggle-row:last-child { border-bottom: none; }
+
+.toggle-label {
+    font-size: 0.88rem;
+    color: var(--clr-body);
+    font-weight: 500;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 46px;
+    height: 26px;
+    flex-shrink: 0;
+}
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: #ddd;
+    border-radius: 26px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 20px;
+    height: 20px;
+    background: var(--clr-white);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+.toggle-switch input:checked + .toggle-slider {
+    background: var(--clr-brand);
+}
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(20px);
+}
+
+/* ============================================================
+   COMPONENTE â€” Toast
+   ============================================================ */
+.toast {
+    position: fixed; bottom: 30px; right: 30px;
+    background: var(--clr-heading); color: var(--clr-white);
+    padding: 14px 24px; border-radius: 14px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.88rem; font-weight: 500;
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3000;
+}
+.toast i { font-size: 1.2rem; color: var(--clr-success); }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ============================================================
+   COMPONENTE â€” Footer
+   ============================================================ */
+.admin-footer {
+    padding: 20px 40px; border-top: 1px solid var(--clr-border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem; background: var(--clr-white);
+}
+.dot {
+    height: 8px; width: 8px; background: var(--clr-success);
+    border-radius: 50%; display: inline-block; margin-right: 5px;
+    animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+    /* Optimización de espacio en tablets */
+    .config-content      { max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+    /* Ajustes para tablets: Cabecera compacta */
+    .top-bar { padding: 18px 20px; min-height: auto; }
+    .page-title { font-size: 1.25rem; }
+    .config-content { padding: 20px; gap: 18px; }
+
+    /* Pestañas de configuración se hacen scrollables horizontalmente en lugar de amontonarse */
+    .tabs-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .tabs-container::-webkit-scrollbar { display: none; }
+    .tab-btn { padding: 10px 16px; font-size: 0.82rem; }
+
+    /* Los formularios pasan a 1 sola columna para mejor lectura */
+    .form-row { grid-template-columns: 1fr; }
+    
+    .section-header { padding: 20px 20px 0; }
+    .section-body { padding: 20px; gap: 16px; }
+    .section-footer { padding: 16px 20px; flex-direction: column; gap: 10px; }
+    
+    /* Botones de acción anchos completos */
+    .section-footer .btn-primary,
+    .section-footer .btn-outline { width: 100%; justify-content: center; }
+
+    /* Selector de temas (claro/oscuro) mantiene 3 columnas pero más apretadas o 1 fila con scroll */
+    .theme-selector { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+    .admin-footer { flex-direction: column; gap: 8px; text-align: center; padding: 16px 20px; }
+}
+
+@media (max-width: 576px) {
+    /* Ajustes completos para móviles */
+    .top-bar { padding: 16px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .header-left { gap: 12px; }
+    
+    /* Panel de acciones superior toma todo el ancho */
+    .header-actions { width: 100%; justify-content: space-between; }
+    .page-title { font-size: 1.1rem; }
+    .config-content { padding: 14px; gap: 14px; }
+
+    /* Pestañas de navegación se agrupan en un cuadrito (grid 2x2) */
+    .tabs-container {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .tab-btn {
+        flex: 1 1 calc(50% - 4px);
+        justify-content: center;
+        padding: 10px 12px;
+        font-size: 0.78rem;
+    }
+
+    /* Selector de temas pasa a 1 sola columna vertical */
+    .theme-selector { grid-template-columns: 1fr; }
+    .theme-preview { height: 60px; }
+
+    .toggle-label { font-size: 0.82rem; }
+    .date-chip { font-size: 0.78rem; padding: 6px 10px; }
+}
+
+@media (max-width: 400px) {
+    /* Ajustes para móviles muy pequeños (iPhone SE) */
+    .page-title { font-size: 1rem; }
+    .page-subtitle { display: none; }
+    
+    /* En pantallas muy chicas, las pestañas solo muestran íconos, no texto */
+    .tab-btn span { display: none; }
+    .tab-btn { justify-content: center; padding: 10px 14px; }
+    .tab-btn i { font-size: 1.2rem; }
+    
+    .section-title { font-size: 1rem; }
+    .config-content { padding: 10px; gap: 10px; }
+}
+
